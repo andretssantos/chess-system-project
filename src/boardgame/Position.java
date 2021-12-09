@@ -1,5 +1,7 @@
 package boardgame;
 
+
+//Represents positions on the board
 public class Position {
 
 	private Integer row;
