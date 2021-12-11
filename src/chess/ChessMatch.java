@@ -13,11 +13,28 @@ import chess.pieces.Rook;
 
 public class ChessMatch {
 
+	private int turn;
+	private Color currentPlayer;
 	private Board board;
 
 	public ChessMatch() {
 		board = new Board(8, 8);
+		turn = 1;
+		currentPlayer = Color.WHITE;
 		initialSetup();
+	}
+
+	public int getTurn() {
+		return turn;
+	}
+
+	public Color getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	private void nextTurn() {
+		turn++;
+		currentPlayer = (currentPlayer == Color.WHITE) ? Color.BLACK : Color.WHITE; // if ? then : else;
 	}
 
 	public ChessPiece[][] getPieces() {
@@ -42,6 +59,7 @@ public class ChessMatch {
 		validateSourcePosition(source);
 		validateTargetPosition(source, target);
 		Piece capturedPiece = makeMove(source, target);
+		nextTurn();
 		return (ChessPiece) capturedPiece;
 	}
 
@@ -54,8 +72,10 @@ public class ChessMatch {
 
 	private void validateSourcePosition(Position position) {
 		if (!board.thereIsAPiece(position)) {
-			throw new ChessException(
-					"There is no piece on the informed source position. Plese inform a valid position");
+			throw new ChessException("There is no piece on the informed source position. Plese inform a valid position");
+		}
+		if (getCurrentPlayer() != ((ChessPiece)board.piece(position)).getColor()) {
+			throw new ChessException ("The chosen piece belongs to the adversary. Please choose another piece");
 		}
 		if (!board.piece(position).isThereAnyPossibleMove()) {
 			throw new ChessException("There are no possible moves for this piece. Please choose another piece");
@@ -90,15 +110,15 @@ public class ChessMatch {
 		placeNewPiece('b', 7, new Pawn(board, Color.BLACK));
 		placeNewPiece('c', 7, new Pawn(board, Color.BLACK));
 		placeNewPiece('d', 7, new Pawn(board, Color.BLACK));
-		//placeNewPiece('e', 7, new Pawn(board, Color.BLACK));
+		// placeNewPiece('e', 7, new Pawn(board, Color.BLACK));
 		placeNewPiece('f', 7, new Pawn(board, Color.BLACK));
 		placeNewPiece('g', 7, new Pawn(board, Color.BLACK));
 		placeNewPiece('h', 7, new Pawn(board, Color.BLACK));
-		placeNewPiece('a', 2, new Pawn(board, Color.WHITE));
+		//placeNewPiece('a', 2, new Pawn(board, Color.WHITE));
 		placeNewPiece('b', 2, new Pawn(board, Color.WHITE));
 		placeNewPiece('c', 2, new Pawn(board, Color.WHITE));
 		placeNewPiece('d', 2, new Pawn(board, Color.WHITE));
-		placeNewPiece('e', 2, new Pawn(board, Color.WHITE));
+		//placeNewPiece('e', 2, new Pawn(board, Color.WHITE));
 		placeNewPiece('f', 2, new Pawn(board, Color.WHITE));
 		placeNewPiece('g', 2, new Pawn(board, Color.WHITE));
 		placeNewPiece('h', 2, new Pawn(board, Color.WHITE));
